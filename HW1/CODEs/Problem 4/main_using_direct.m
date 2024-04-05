@@ -13,19 +13,9 @@ set(0, 'defaultTextInterpreter', 'latex');
 problem.plant.ap = 2; % actual sys feedback gain
 problem.plant.kp = 2; % actual sys feedforward gain
 
-problem.refModel.am    = -3; % adaptive sys hurwitz param
-problem.refModel.km    =  3; % adaptive sys hurwitz param
+problem.refModel.am    = -3; % ref model feedback gain
+problem.refModel.km    =  3; % ref model feedforward gain
 problem.refModel.gamma = 50; % adaptation rate
-
- % Real system parameters (plant) :
-    %   Note : xp' = ap * xp + kp * u
-    ap = 2; % actual sys feedback gain
-    kp = 2; % actual sys feedforward gain
-
-    % Reference system parameters :
-    %   Note : xm' = am * xm + km * r
-    am = -3; % ref model feedback gain
-    km =  3; % ref model feedforward gain
 
 %% Simulate System
 

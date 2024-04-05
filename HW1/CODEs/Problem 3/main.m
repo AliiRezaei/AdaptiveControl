@@ -14,6 +14,22 @@ adaptSys.Q  = eye(n);
 adaptSys.P  = lyap(adaptSys.Am, adaptSys.Q);
 adaptSys.gamma = 100;
 
+%% Problem Definition
+
+% The plant state-space as follows :
+%   xp' = ap * xp + alpha * f(xp) + kp * g(u)
+
+problem.plant.ap    = -1;       % linear term gain
+problem.plant.alpha = -2;       % nonlinear term gain
+problem.plant.kp = 3;           % actual feedforward gain
+problem.plant.f  = @(x) x^3;    % nonlinear function of xp [f(xp)]
+problem.plant.g  = @(u) sin(u); % nonlinear function of  u [g(u)]
+
+problem.adapt.am      = -2; % adaptive sys hurwitz param
+problem.adapt.gamma   = 50; % adaptation rate
+problem.adapt.modelID =  2; % set model ID for parametrization
+
+
 %% Simulate System
 
 dt = 0.1;                % time step [seconds]

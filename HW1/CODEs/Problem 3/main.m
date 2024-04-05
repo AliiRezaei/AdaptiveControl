@@ -10,16 +10,12 @@ set(0, 'defaultTextInterpreter', 'latex');
 
 problem.plant.Ap = [0, 1; -2, -3];
 problem.plant.Bp = [0, 1]';
-n  = size(actualSys.A ,1);
+n  = size(problem.plant.Ap ,1);
 
 problem.adapt.Am = [0, 1; -1, -2];
 Q  = eye(n);
 problem.adapt.P  = lyap(problem.adapt.Am, Q);
 problem.adapt.gamma = 100;
-
-
-problem.adapt.modelID =  2; % set model ID for parametrization
-
 
 %% Simulate System
 
@@ -32,7 +28,7 @@ A_hat_0 = rand(n, n);    % estimated sys matrix init cond
 B_hat_0 = rand(n, 1);    % estimated input matrix init cond
 InitCond = [x_0; x_hat_0; A_hat_0(:); B_hat_0(:)]; % initial conditions
 u = @(t) (sin(t) + sin(2*t) + sin(3*t));           % system input
-odeFunc = @(t, x) AdaptIdentHighOrder(t, x, u, actualSys, adaptSys); % ode function
+odeFunc = @(t, x) AdaptIdentHighOrder(t, x, u, problem); % ode function
 [~, X] = ode45(odeFunc, tSpan, InitCond); % solve ode
 nStates = size(X, 1);                     % number of states
 

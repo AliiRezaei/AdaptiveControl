@@ -24,19 +24,15 @@ function dx = HighOrderMRAC(t, states, r, problem)
     %   t --> time
     %   states --> agumented states
     %   r --> reference signal
-    %   actulaSys --> actula system (plant) params. 
-    %   contains :
-    %       actulaSys.A ~ Ap
-    %       actulaSys.B ~ Bp
-    %   adaptSys --> adaptive system params. 
-    %   contains :
-    %       adaptSys.Am ~ reference model system matrix
-    %       adaptSys.Bm ~ reference model input matrix
-    %       adaptSys.P  ~ lyapunov P matrix
-    %       adaptSys.Q  ~ lyapunov Q matrix
-    %       adaptSys.gamma  ~ adaptation rate
+    %   problem --> contains plant and reference model params (problem formulation)
+    %       problem.plant.Ap ~ Ap
+    %       problem.plant.Bp ~ Bp
+    %       problem.refModel.Am ~ Am
+    %       problem.refModel.Bm ~ Bm
+    %       problem.refModel.P  ~ P  (lyapanuve P matrix)
+    %       problem.refModel.gamma ~ gamma (adaptation rate)
     %   Note : Am, P, Q satisfy following lyapunov equation :
-    %       << Am^T * P + P * Am = -Q >>
+    %       << Am^T * P + P * Am = - Q >> (Q declared in main program)
     % Outputs :
     %   dx --> derivative of agumented states
     

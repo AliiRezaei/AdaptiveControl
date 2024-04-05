@@ -1,4 +1,4 @@
-function dx = AdaptIdentHighOrder(t, states, u, actualSys, adaptSys)
+function dx = AdaptIdentHighOrder(t, states, u, problem)
     % Adaptive Identification of linear High Order SISO systems.
     % In this case we have a linear sys as follows :
     %   xp' = Ap * xp + Bp * u
@@ -29,15 +29,15 @@ function dx = AdaptIdentHighOrder(t, states, u, actualSys, adaptSys)
     %   dx --> derivative of agumented states
     
     % actual system parameters :
-    Ap = actualSys.Ap;
-    Bp = actualSys.Bp;
+    Ap = problem.plant.Ap;
+    Bp = problem.plant.Bp;
     n = size(Ap, 1);
     nStates = numel(states);
 
     % adaptive system parameters :
-    Am = adaptSys.Am;
-    P = adaptSys.P;
-    gamma = adaptSys.gamma;
+    Am = problem.adapt.Am;
+    P  = problem.adapt.P;
+    gamma = problem.adapt.gamma;
 
     % Unpack states :
     x_idx = 1:n; % measured indices

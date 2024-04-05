@@ -3,7 +3,12 @@ clear
 close all
 set(0, 'defaultTextInterpreter', 'latex');
 
-%% System Parameters
+%% Problem Definition
+
+% The plant state-space as follows :
+%   xp' = Ap * xp + Bp * u
+% The reference model state-space as follows :
+%   xm' = Am * xm + Bm * r
 
 actualSys.A = [0, 1; -4, 4];
 actualSys.B = [0, 1]';

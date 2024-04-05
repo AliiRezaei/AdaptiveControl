@@ -29,16 +29,16 @@ function dx = AdaptIdentNonLin(t, states, u, problem)
 
     % Real system parameters :
     %   Note : xp' = ap * xp + alpha * f(xp) + kp * g(u)
-    ap    = problem.plant.ap;    % linear term gain
-    alpha = problem.plant.alpha; % nonlinear term gain
-    kp    = problem.plant.kp;    % actual feedforward gain
-    f     = problem.plant.f;     % nonlinear function of xp [f(xp)]
-    g     = problem.plant.g;     % nonlinear function of  u [g(u)]
+    ap    = problem.plant.ap;     % linear term gain
+    alpha = problem.plant.alpha;  % nonlinear term gain
+    kp    = problem.plant.kp;     % actual feedforward gain
+    f     = problem.plant.f;      % nonlinear function of xp [f(xp)]
+    g     = problem.plant.g;      % nonlinear function of  u [g(u)]
 
     % Adaptation law parameters :
-    am    =  problem.adapt.am;         % hurwitz param
-    gamma =  problem.adapt.gamma;         % adaptation rate
-    e = xp_hat - xp;     % estimation error
+    am    =  problem.adapt.am;    % hurwitz param
+    gamma =  problem.adapt.gamma; % adaptation rate
+    e = xp_hat - xp;              % estimation error
 
     % Derivative of states (Model (II) case):
     dx    = zeros(5, 1);

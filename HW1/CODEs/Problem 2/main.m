@@ -14,9 +14,9 @@ problem.plant.kp = 3;           % actual feedforward gain
 problem.plant.f  = @(x) x^3;    % nonlinear function of xp [f(xp)]
 problem.plant.g  = @(u) sin(u); % nonlinear function of  u [g(u)]
 
-problem.adapt.am      = -1; % adaptive sys hurwitz param
-problem.adapt.gamma   = 10; % adaptation rate
-problem.adapt.modelID =  1; % set model ID for parametrization
+problem.adapt.am      = -2; % adaptive sys hurwitz param
+problem.adapt.gamma   = 50; % adaptation rate
+problem.adapt.modelID =  2; % set model ID for parametrization
 
 %% Simulate System
 
@@ -29,9 +29,9 @@ ap_hat_0 = rand;         % estimated linear term gain init cond
 alpha_hat_0 = rand;      % estimated nonlinear term gain init cond
 kp_hat_0 = rand;         % estimated feedforward gain init cond
 InitCond = [xp_0, xp_hat_0, ap_hat_0, alpha_hat_0, kp_hat_0]'; % initial conditions
-u = @(t) sin(t) + 0.2 * sin(2 * t);          % system input
-odeFunc = @(t, x) AdaptIdentNonLin(t, x, u); % ode function
-[~, x] = ode45(odeFunc, tSpan, InitCond);    % solve ode
+u = @(t) sin(t) + 0.2 * sin(2 * t);                   % system input
+odeFunc = @(t, x) AdaptIdentNonLin(t, x, u, problem); % ode function
+[~, x] = ode45(odeFunc, tSpan, InitCond);             % solve ode
 
 % Unpack states :
 xp        = x(:, 1); % system measured state

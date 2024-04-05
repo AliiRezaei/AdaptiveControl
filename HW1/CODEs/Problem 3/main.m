@@ -17,7 +17,7 @@ adaptSys.gamma = 100;
 %% Problem Definition
 
 % The plant state-space as follows :
-%   xp' = ap * xp + alpha * f(xp) + kp * g(u)
+%   xp' = Ap * xp + Bp * u
 
 problem.plant.ap    = -1;       % linear term gain
 problem.plant.alpha = -2;       % nonlinear term gain

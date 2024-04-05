@@ -35,13 +35,14 @@ function dx = DirectMRAC(t, states, r)
 
     % Real system parameters (plant) :
     %   Note : xp' = ap * xp + kp * u
-    ap = 2; % actual sys feedback gain
-    kp = 2; % actual sys feedforward gain
+    ap = problem.plant.ap; % actual sys feedback gain
+    kp = problem.plant.kp; % actual sys feedforward gain
 
     % Reference system parameters :
     %   Note : xm' = am * xm + km * r
-    am = -3; % ref model feedback gain
-    km =  3; % ref model feedforward gain
+    am = problem.refModel.am; % ref model feedback gain
+    km = problem.refModel.km; % ref model feedforward gain
+    gamma = problem.refModel.gamma; % adaptation rate
 
     % Designing control law :
     u = theta_hat * xp + k_hat * r(t);

@@ -1,4 +1,4 @@
-function dx = AdaptIdent(t, states, u, modelID)
+function dx = AdaptIdent(t, states, u, problem)
     % Adaptive Identification of linear scaler systems.
     % In this case we have a linear sys as follows :
     %   xp' = ap * xp + kp * u
@@ -12,14 +12,19 @@ function dx = AdaptIdent(t, states, u, modelID)
     % Model (I) :
     %   xp_hat' = ap_hat * xp_hat + kp_hat * u
     % Model (II) :
-    %   xp_hat' = ap_hat * xp_hat + kp_hat * u
-    % For using Model (I)  --> set the modelID to 1
-    % For using Model (II) --> set the modelID to 2
+    %   xp_hat' = am * xp_hat + (ap_hat - am) * xp + kp_hat * u
+    % For using Model (I)  --> set the problem.adapt.modelID to 1
+    % For using Model (II) --> set the problem.adapt.modelID to 2
     % Inputs :
     %   t --> time
     %   states --> agumented states
     %   u --> sys input
-    %   modelID --> 1 for using Model (I) or 2 for using Model (II)
+    %   problem --> contains plant and adaptive sys params (problem formulation)
+    %       problem.plant.ap ~ ap
+    %       problem.plant.kp ~ kp
+    %       problem.adapt.am ~ am
+    %       problem.adapt.gamma   ~ gamma
+    %       problem.adapt.modelID ~ modelID
     % Outputs :
     %   dx --> derivative of agumented states
     
@@ -31,13 +36,14 @@ function dx = AdaptIdent(t, states, u, modelID)
 
     % Real system parameters :
     %   Note : xp' = ap * xp + kp * u
-    ap = -1; % actual feedback gain
-    kp =  1; % actual feedforward gain
+    ap = problem.plant.ap; % actual feedback gain
+    kp = problem.plant.kp; % actual feedforward gain
 
     % Adaptation law parameters :
-    am    =  -2;         % hurwitz param
-    gamma =  10;         % adaptation rate
-    e = xp_hat - xp;     % estimation error
+    am      = problem.adapt.am;      % hurwitz param
+    gamma   = problem.adapt.gamma;   % adaptation rate
+    modelID = problem.adapt.modelID; % model ID
+    e = xp_hat - xp;                 % estimation error
 
     % Derivative of states (using Model (I) case):
     if modelID == 1

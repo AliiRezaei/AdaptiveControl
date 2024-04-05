@@ -13,9 +13,9 @@ set(0, 'defaultTextInterpreter', 'latex');
 problem.plant.ap = 2; % actual sys feedback gain
 problem.plant.kp = 2; % actual sys feedforward gain
 
-problem.refModel.am    = -3; % ref model feedback gain
-problem.refModel.km    =  3; % ref model feedforward gain
-problem.refModel.gamma = 50; % adaptation rate
+problem.refModel.am    =  -3; % ref model feedback gain
+problem.refModel.km    =   3; % ref model feedforward gain
+problem.refModel.gamma = 100; % adaptation rate
 
 %% Simulate System
 
@@ -28,7 +28,7 @@ theta_hat_0 = rand;      % estimated feedback gain init cond
 k_hat_0 = rand;          % estimated feedforward gain init cond
 InitCond = [xp_0, xm_0, theta_hat_0, k_hat_0]'; % initial conditions
 r = @(t) sin(t);                                % reference signal
-odeFunc = @(t, x) DirectMRAC(t, x, r);          % ode function
+odeFunc = @(t, x) DirectMRAC(t, x, r, problem);          % ode function
 [~, x] = ode45(odeFunc, tSpan, InitCond);       % solve ode
 
 % Unpack states :

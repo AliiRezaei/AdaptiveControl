@@ -15,7 +15,6 @@ problem.adapt.am      = -1; % adaptive sys hurwitz param
 problem.adapt.gamma   = 10; % adaptation rate
 problem.adapt.modelID =  1; % set model ID for parametrization
 
-
 %% Simulate System
 
 dt = 0.1;                % time step [seconds]
@@ -27,8 +26,7 @@ ap_hat_0 = rand;         % estimated feedback gain init cond
 kp_hat_0 = rand;         % estimated feedforward gain init cond
 InitCond = [xp_0, xp_hat_0, ap_hat_0, kp_hat_0]'; % initial conditions
 u = @(t) sin(t); % system input
-modelID = 1;     % for using Model (I)
-odeFunc = @(t, x) AdaptIdent(t, x, u, modelID); % ode function
+odeFunc = @(t, x) AdaptIdent(t, x, u, problem); % ode function
 [~, x] = ode45(odeFunc, tSpan, InitCond);       % solve ode
 
 % Unpack states :

@@ -6,18 +6,26 @@ set(0, 'defaultTextInterpreter', 'latex');
 %% Problem Definition
 
 % The plant state-space as follows :
-%   xp' = ap * xp + alpha * f(xp) + kp * g(u)
+%   xp' = ap * xp + kp * u
+% The reference model state-space as follows :
+%   xm' = am * xm + km * r
 
-problem.plant.ap    = -1;       % linear term gain
-problem.plant.alpha = -2;       % nonlinear term gain
-problem.plant.kp = 3;           % actual feedforward gain
-problem.plant.f  = @(x) x^3;    % nonlinear function of xp [f(xp)]
-problem.plant.g  = @(u) sin(u); % nonlinear function of  u [g(u)]
+problem.plant.ap = 2; % actual sys feedback gain
+problem.plant.kp = 2; % actual sys feedforward gain
 
-problem.adapt.am      = -2; % adaptive sys hurwitz param
-problem.adapt.gamma   = 50; % adaptation rate
-problem.adapt.modelID =  2; % set model ID for parametrization
+problem.refModel.am    = -3; % adaptive sys hurwitz param
+problem.refModel.km    =  3; % adaptive sys hurwitz param
+problem.refModel.gamma = 50; % adaptation rate
 
+ % Real system parameters (plant) :
+    %   Note : xp' = ap * xp + kp * u
+    ap = 2; % actual sys feedback gain
+    kp = 2; % actual sys feedforward gain
+
+    % Reference system parameters :
+    %   Note : xm' = am * xm + km * r
+    am = -3; % ref model feedback gain
+    km =  3; % ref model feedforward gain
 
 %% Simulate System
 

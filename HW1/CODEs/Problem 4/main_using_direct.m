@@ -10,8 +10,8 @@ set(0, 'defaultTextInterpreter', 'latex');
 % The reference model state-space as follows :
 %   xm' = am * xm + km * r
 
-problem.plant.ap = 2; % actual sys feedback gain
-problem.plant.kp = 2; % actual sys feedforward gain
+problem.plant.ap = 2; % plant feedback gain
+problem.plant.kp = 2; % plant feedforward gain
 
 problem.refModel.am    =  -3; % ref model feedback gain
 problem.refModel.km    =   3; % ref model feedforward gain

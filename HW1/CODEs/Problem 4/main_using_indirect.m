@@ -28,9 +28,9 @@ xm_0 = rand;             % ref model init cond
 ap_hat_0 = rand;         % estimated feedback gain init cond
 kp_hat_0 = 3 + rand;     % estimated feedforward gain init cond
 InitCond = [xp_0, xp_hat_0, xm_0, ap_hat_0, kp_hat_0]'; % initial conditions
-r = @(t) sin(t);                                % reference signal
-odeFunc = @(t, x) IndirectMRAC(t, x, r);        % ode function
-[~, x] = ode45(odeFunc, tSpan, InitCond);       % solve ode
+r = @(t) sin(t);                                  % reference signal
+odeFunc = @(t, x) IndirectMRAC(t, x, r, problem); % ode function
+[~, x] = ode45(odeFunc, tSpan, InitCond);         % solve ode
 
 % Unpack states :
 xp     = x(:, 1); % plant measured state

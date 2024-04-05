@@ -1,4 +1,4 @@
-function dx = DirectMRAC(t, states, r)
+function dx = DirectMRAC(t, states, r, problem)
     % Model Reference Adaptive Control Direct method.
     % In this case we have a linear sys as follows :
     %   xp' = ap * xp + kp * u  (plant)
@@ -47,7 +47,6 @@ function dx = DirectMRAC(t, states, r)
     % Designing control law :
     u = theta_hat * xp + k_hat * r(t);
     et = xp - xm; % tracking error
-    gamma = 100; % adaptation rate
 
     % Derivative of states (direct method case):
     dx    = zeros(4, 1);

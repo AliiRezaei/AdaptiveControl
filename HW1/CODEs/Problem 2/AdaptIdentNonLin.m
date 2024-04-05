@@ -70,7 +70,7 @@ function dx = AdaptIdentNonLin(t, states, u, problem)
     if modelID == 2
         dx    = zeros(5, 1);
         dx(1) = ap * xp + alpha * f(xp) + kp * g(u(t));
-        dx(2) = am * xp_hat + (ap_hat - am) * xp + alpha_hat * f(xp) + kp_hat * g(u(t));
+        dx(2) = am * xp_hat + (ap_hat - am) * xp + alpha_hat * f(xp_hat) + kp_hat * g(u(t));
         dx(3) = - gamma * e * xp;
         dx(4) = - gamma * e * f(xp);
         dx(5) = - gamma * e * g(u(t));

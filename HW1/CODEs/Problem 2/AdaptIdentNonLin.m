@@ -17,6 +17,13 @@ function dx = AdaptIdentNonLin(t, states, u, problem)
     %   t --> time
     %   states --> agumented states
     %   u --> sys input
+    %   problem --> contains plant and adaptive sys params (problem formulation)
+    %       problem.plant.ap ~ ap
+    %       problem.plant.kp ~ kp
+    %       problem.plant.alpha ~ alpha
+    %       problem.adapt.am ~ am
+    %       problem.adapt.gamma   ~ gamma
+    %       problem.adapt.modelID ~ modelID
     % Outputs :
     %   dx --> derivative of agumented states
     

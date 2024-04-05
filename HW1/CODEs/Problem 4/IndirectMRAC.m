@@ -25,6 +25,12 @@ function dx = IndirectMRAC(t, states, r, problem)
     %   t --> time
     %   states --> agumented states
     %   r --> reference signal
+    %   problem --> contains plant and reference model params (problem formulation)
+    %       problem.plant.ap ~ ap
+    %       problem.plant.kp ~ kp
+    %       problem.refModel.am ~ am
+    %       problem.refModel.km ~ km
+    %       problem.refModel.gamma ~ gamma (adaptation rate)
     % Outputs :
     %   dx --> derivative of agumented states
     

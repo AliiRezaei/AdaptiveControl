@@ -10,27 +10,27 @@ set(0, 'defaultTextInterpreter', 'latex');
 % The reference model state-space as follows :
 %   xm' = Am * xm + Bm * r
 
-actualSys.A = [0, 1; -4, 4];
-actualSys.B = [0, 1]';
-n  = size(actualSys.A ,1);
+problem.plant.Ap = [0, 1; -4, 4];
+problem.plant.Bp = [0, 1]';
+n  = size(problem.plant.Ap ,1);
 
-adaptSys.Am = [0, 1; -1, -1];
-adaptSys.Bm = [0, 1]';
-adaptSys.Q  = eye(n);
-adaptSys.P  = lyap(adaptSys.Am, adaptSys.Q);
-adaptSys.gamma = 1;
+problem.refModel.Am = [0, 1; -1, -1];
+problem.refModel.Bm = [0, 1]';
+Q  = eye(n);
+problem.refModel.P  = lyap(problem.refModel.Am, Q);
+problem.refModel.gamma = 1;
 
 %% Simulate System
 
 dt = 0.1;                % time step [seconds]
 SimTime = 60;            % maximum simulation time [seconds]
 tSpan = (0:dt:SimTime)'; % time span
-xp_0  = rand(n, 1);       % plant init cond
+xp_0  = rand(n, 1);      % plant init cond
 xm_0 = xp_0 + 0.1 * rand(n, 1);    % ref model init cond
 theta_hat_0 = rand(n, 1);
 InitCond = [xp_0; xm_0; theta_hat_0]; % initial conditions
 r = @(t) (sin(t) + sin(2*t) + sin(3*t));           % system input
-odeFunc = @(t, x) HighOrderMRAC(t, x, r, actualSys, adaptSys); % ode function
+odeFunc = @(t, x) HighOrderMRAC(t, x, r, problem); % ode function
 [~, X] = ode45(odeFunc, tSpan, InitCond); % solve ode
 nStates = size(X, 1);                     % number of states
 

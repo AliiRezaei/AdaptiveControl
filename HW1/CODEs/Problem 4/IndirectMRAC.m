@@ -47,7 +47,7 @@ function dx = IndirectMRAC(t, states, r, problem)
     gamma = problem.refModel.gamma; % adaptation rate
 
     % Designing control law :
-    u = (am - ap_hat) / (kp_hat) * xp + (km) / (kp_hat) * r(t);
+    u = (am - ap_hat) / (kp_hat) * xp + (km) / (kp_hat) * r(t); % control law
     ei = xp_hat - xp; % identification error
 
     % Derivative of states (indirect method case):

@@ -29,9 +29,9 @@ function dx = AdaptIdentHighOrder(t, states, u, actualSys, adaptSys)
     %   dx --> derivative of agumented states
     
     % actual system parameters :
-    A = actualSys.A;
-    B = actualSys.B;
-    n = size(A, 1);
+    Ap = actualSys.Ap;
+    Bp = actualSys.Bp;
+    n = size(Ap, 1);
     nStates = numel(states);
 
     % adaptive system parameters :
@@ -57,7 +57,7 @@ function dx = AdaptIdentHighOrder(t, states, u, actualSys, adaptSys)
     % Derivative of states :
     e  = x_hat - x;
     dx = zeros(nStates,1);
-    dx(x_idx)     = A * x + B * u(t);
+    dx(x_idx)     = Ap * x + Bp * u(t);
     dx(x_hat_idx) = Am * x_hat + (A_hat - Am) * x + B_hat * u(t);
     dx(A_hat_idx) = - gamma * P * e * x';
     dx(B_hat_idx) = - gamma * P * e * u(t)';

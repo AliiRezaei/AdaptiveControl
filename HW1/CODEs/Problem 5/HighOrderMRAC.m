@@ -41,16 +41,16 @@ function dx = HighOrderMRAC(t, states, r, problem)
     %   dx --> derivative of agumented states
     
     % Actual system parameters :
-    Ap = actualSys.A;
-    Bp = actualSys.B;
+    Ap = problem.plant.Ap;
+    Bp = problem.plant.Bp;
     n = size(Ap, 1);
     nStates = numel(states);
 
     % Reference model parameters :
-    Am = adaptSys.Am;
-    Bm = adaptSys.Bm;
-    P = adaptSys.P;
-    gamma = adaptSys.gamma;
+    Am = problem.refModel.Am;
+    Bm = problem.refModel.Bm;
+    P  = problem.refModel.P;
+    gamma = problem.refModel.gamma;
 
     % Unpack states :
     xp_idx = 1:n; % measured indices

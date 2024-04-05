@@ -3,6 +3,19 @@ clear
 close all
 set(0, 'defaultTextInterpreter', 'latex');
 
+%% Problem Definition
+
+% The plant state-space as follows :
+%   xp' = ap * xp + kp * u
+
+problem.plant.ap = -1;      % plant feedback gain
+problem.plant.kp =  1;      % plant feedforward gain
+
+problem.adapt.am      = -1; % adaptive sys hurwitz param
+problem.adapt.gamma   = 10; % adaptation rate
+problem.adapt.modelID =  1; % set model ID for parametrization
+
+
 %% Simulate System
 
 dt = 0.1;                % time step [seconds]

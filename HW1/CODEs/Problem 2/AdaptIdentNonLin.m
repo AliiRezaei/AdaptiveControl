@@ -12,7 +12,13 @@ function dx = AdaptIdentNonLin(t, states, u, problem)
     %   u  --> sys input               (1 by 1)
     %   g(u) --> nonlinear scalar function of u
     % We want to estimate the system params (ap, alpha, kp), also system state.
-    % This code use the Model (II) for parameterization.
+    % This code cover the both Model (I) and Model (II) parameterization.
+    % Model (I) :
+    %   xp_hat' = ap_hat * xp_hat + alpha_hat * f(xp) + kp_hat * g(u)
+    % Model (II) :
+    %   xp_hat' = am * xp_hat + (ap_hat - am) * xp + alpha_hat * f(xp) + kp_hat * g(u)
+    % For using Model (I)  --> set the problem.adapt.modelID to 1
+    % For using Model (II) --> set the problem.adapt.modelID to 2
     % Inputs :
     %   t --> time
     %   states --> agumented states
@@ -22,7 +28,9 @@ function dx = AdaptIdentNonLin(t, states, u, problem)
     %       problem.plant.kp ~ kp
     %       problem.plant.alpha ~ alpha
     %       problem.adapt.am ~ am
-    %       problem.adapt.gamma   ~ gamma
+    %       problem.adapt.gamma ~ gamma
+    %       problem.adapt.f ~ f(xp)
+    %       problem.adapt.g ~ g(u)
     %       problem.adapt.modelID ~ modelID
     % Outputs :
     %   dx --> derivative of agumented states
@@ -43,16 +51,29 @@ function dx = AdaptIdentNonLin(t, states, u, problem)
     g     = problem.plant.g;      % nonlinear function of  u [g(u)]
 
     % Adaptation law parameters :
-    am    =  problem.adapt.am;    % hurwitz param
-    gamma =  problem.adapt.gamma; % adaptation rate
+    am      =  problem.adapt.am;     % hurwitz param
+    gamma   =  problem.adapt.gamma;  % adaptation rate
+    modelID = problem.adapt.modelID; % model ID
     e = xp_hat - xp;              % estimation error
 
-    % Derivative of states (Model (II) case):
-    dx    = zeros(5, 1);
-    dx(1) = ap * xp + alpha * f(xp) + kp * g(u(t));
-    dx(2) = am * xp_hat + (ap_hat - am) * xp + alpha_hat * f(xp) + kp_hat * g(u(t));
-    dx(3) = - gamma * e * xp;
-    dx(4) = - gamma * e * f(xp);
-    dx(5) = - gamma * e * g(u(t));
+    % Derivative of states (using Model (I) case):
+    if modelID == 1
+        dx    = zeros(5, 1);
+        dx(1) = ap * xp + alpha * f(xp) + kp * g(u(t));
+        dx(2) = ap_hat * xp_hat + alpha_hat * f(xp) + kp_hat * g(u(t));
+        dx(3) = - gamma * e * xp;
+        dx(4) = - gamma * e * f(xp);
+        dx(5) = - gamma * e * g(u(t));
+    end
+
+    % Derivative of states (using Model (II) case):
+    if modelID == 2
+        dx    = zeros(5, 1);
+        dx(1) = ap * xp + alpha * f(xp) + kp * g(u(t));
+        dx(2) = am * xp_hat + (ap_hat - am) * xp + alpha_hat * f(xp) + kp_hat * g(u(t));
+        dx(3) = - gamma * e * xp;
+        dx(4) = - gamma * e * f(xp);
+        dx(5) = - gamma * e * g(u(t));
+    end
         
 end

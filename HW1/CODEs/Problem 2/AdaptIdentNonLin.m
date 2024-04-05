@@ -36,8 +36,8 @@ function dx = AdaptIdentNonLin(t, states, u, problem)
     g     = problem.plant.g;     % nonlinear function of  u [g(u)]
 
     % Adaptation law parameters :
-    am    =  -2;         % hurwitz param
-    gamma =  50;         % adaptation rate
+    am    =  problem.adapt.am;         % hurwitz param
+    gamma =  problem.adapt.gamma;         % adaptation rate
     e = xp_hat - xp;     % estimation error
 
     % Derivative of states (Model (II) case):

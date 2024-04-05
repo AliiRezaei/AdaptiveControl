@@ -3,30 +3,21 @@ clear
 close all
 set(0, 'defaultTextInterpreter', 'latex');
 
-%% System Parameters
-
-actualSys.A = [0, 1; -2, -3];
-actualSys.B = [0, 1]';
-n  = size(actualSys.A ,1);
-
-adaptSys.Am = [0, 1; -1, -2];
-adaptSys.Q  = eye(n);
-adaptSys.P  = lyap(adaptSys.Am, adaptSys.Q);
-adaptSys.gamma = 100;
-
 %% Problem Definition
 
 % The plant state-space as follows :
 %   xp' = Ap * xp + Bp * u
 
-problem.plant.ap    = -1;       % linear term gain
-problem.plant.alpha = -2;       % nonlinear term gain
-problem.plant.kp = 3;           % actual feedforward gain
-problem.plant.f  = @(x) x^3;    % nonlinear function of xp [f(xp)]
-problem.plant.g  = @(u) sin(u); % nonlinear function of  u [g(u)]
+problem.plant.Ap = [0, 1; -2, -3];
+problem.plant.Bp = [0, 1]';
+n  = size(actualSys.A ,1);
 
-problem.adapt.am      = -2; % adaptive sys hurwitz param
-problem.adapt.gamma   = 50; % adaptation rate
+problem.adapt.Am = [0, 1; -1, -2];
+Q  = eye(n);
+problem.adapt.P  = lyap(problem.adapt.Am, Q);
+problem.adapt.gamma = 100;
+
+
 problem.adapt.modelID =  2; % set model ID for parametrization
 
 

@@ -22,17 +22,17 @@ problem.refModel.gamma = 1;
 
 %% Simulate System
 
-dt = 0.1;                % time step [seconds]
-SimTime = 60;            % maximum simulation time [seconds]
-tSpan = (0:dt:SimTime)'; % time span
-xp_0  = rand(n, 1);      % plant init cond
-xm_0 = xp_0 + 0.1 * rand(n, 1);    % ref model init cond
+dt = 0.1;                       % time step [seconds]
+SimTime = 60;                   % maximum simulation time [seconds]
+tSpan = (0:dt:SimTime)';        % time span
+xp_0  = rand(n, 1);             % plant init cond
+xm_0 = xp_0 + 0.1 * rand(n, 1); % ref model init cond
 theta_hat_0 = rand(n, 1);
-InitCond = [xp_0; xm_0; theta_hat_0]; % initial conditions
+InitCond = [xp_0; xm_0; theta_hat_0];              % initial conditions
 r = @(t) (sin(t) + sin(2*t) + sin(3*t));           % system input
 odeFunc = @(t, x) HighOrderMRAC(t, x, r, problem); % ode function
-[~, X] = ode45(odeFunc, tSpan, InitCond); % solve ode
-nStates = size(X, 1);                     % number of states
+[~, X] = ode45(odeFunc, tSpan, InitCond);          % solve ode
+nStates = size(X, 1);                              % number of states
 
 % Unpack states :
 x_p       = X(:, 1:n);    

@@ -27,7 +27,7 @@ xm_0 = rand;             % estimated sys init cond
 theta_hat_0 = rand;      % estimated feedback gain init cond
 k_hat_0 = rand;          % estimated feedforward gain init cond
 InitCond = [xp_0, xm_0, theta_hat_0, k_hat_0]'; % initial conditions
-r = @(t) sin(t) + sin(2*t);                                % reference signal
+r = @(t) sin(t);                                % reference signal
 odeFunc = @(t, x) DirectMRAC(t, x, r, problem);          % ode function
 [~, x] = ode45(odeFunc, tSpan, InitCond);       % solve ode
 

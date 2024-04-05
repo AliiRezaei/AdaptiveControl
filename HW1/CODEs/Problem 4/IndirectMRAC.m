@@ -1,4 +1,4 @@
-function dx = IndirectMRAC(t, states, r)
+function dx = IndirectMRAC(t, states, r, problem)
     % Model Reference Adaptive Control Indirect method.
     % In this case we have a linear sys as follows :
     %   xp' = ap * xp + kp * u  (plant)
@@ -37,18 +37,18 @@ function dx = IndirectMRAC(t, states, r)
 
     % Real system parameters (plant) :
     %   Note : xp' = ap * xp + kp * u
-    ap = 2; % actual sys feedback gain
-    kp = 2; % actual sys feedforward gain
+    ap = problem.plant.ap; % actual sys feedback gain
+    kp = problem.plant.kp; % actual sys feedforward gain
 
     % Reference system parameters :
     %   Note : xm' = am * xm + km * r
-    am = -3; % ref model feedback gain
-    km =  3; % ref model feedforward gain
+    am = problem.refModel.am; % ref model feedback gain
+    km = problem.refModel.km; % ref model feedforward gain
+    gamma = problem.refModel.gamma; % adaptation rate
 
     % Designing control law :
     u = (am - ap_hat) / (kp_hat) * xp + (km) / (kp_hat) * r(t);
     ei = xp_hat - xp; % identification error
-    gamma = 100;      % adaptation rate
 
     % Derivative of states (indirect method case):
     dx    = zeros(4, 1);

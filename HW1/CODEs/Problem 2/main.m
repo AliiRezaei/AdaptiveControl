@@ -52,7 +52,7 @@ ylabel('x(t)', 'FontSize', 15)
 title('Measured and Estimated States', 'FontSize', 15)
 legend('$x_p(t)$','$\hat{x}_p(t)$','interpreter', 'latex')
 
-% Plot estimated parametes :
+% Plot estimated parameters :
 figure
 subplot(3, 1, 1)
 plot(tSpan, ap_hat, 'LineWidth', 2)

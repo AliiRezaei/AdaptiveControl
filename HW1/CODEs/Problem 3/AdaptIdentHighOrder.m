@@ -13,18 +13,14 @@ function dx = AdaptIdentHighOrder(t, states, u, problem)
     %   t --> time
     %   states --> agumented states
     %   u --> sys input
-    %   actulaSys --> actula system (plant) params. 
-    %   contains :
-    %       actulaSys.A ~ Ap
-    %       actulaSys.B ~ Bp
-    %   adaptSys --> adaptive system params. 
-    %   contains :
-    %       adaptSys.Am ~ Hurwitz matrix with size Ap
-    %       adaptSys.P  ~ lyapunov P matrix
-    %       adaptSys.Q  ~ lyapunov Q matrix
-    %       adaptSys.gamma  ~ adaptation rate
+    %   problem --> contains plant and adaptive sys params (problem formulation)
+    %       problem.plant.Ap ~ Ap
+    %       problem.plant.Bp ~ Bp
+    %       problem.adapt.Am ~ Am
+    %       problem.adapt.P  ~ P  (lyapunov P matrix)
+    %       problem.adapt.gamma ~ gamma
     %   Note : Am, P, Q satisfy following lyapunov equation :
-    %       << Am^T * P + P * Am = -Q >>
+    %       << Am^T * P + P * Am = - Q >> (Q declared in main program)
     % Outputs :
     %   dx --> derivative of agumented states
     

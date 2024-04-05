@@ -1,4 +1,4 @@
-function dx = HighOrderMRAC(t, states, r, actualSys, adaptSys)
+function dx = HighOrderMRAC(t, states, r, problem)
     % Model Reference Adaptive Control of linear High Order systems (Direct method case).
     % In this case we have a linear sys as follows :
     %   xp' = Ap * xp + Bp * u
@@ -41,9 +41,9 @@ function dx = HighOrderMRAC(t, states, r, actualSys, adaptSys)
     %   dx --> derivative of agumented states
     
     % Actual system parameters :
-    A = actualSys.A;
-    B = actualSys.B;
-    n = size(A, 1);
+    Ap = actualSys.A;
+    Bp = actualSys.B;
+    n = size(Ap, 1);
     nStates = numel(states);
 
     % Reference model parameters :
@@ -68,7 +68,7 @@ function dx = HighOrderMRAC(t, states, r, actualSys, adaptSys)
 
     % Derivative of states :
     dx = zeros(nStates, 1);
-    dx(xp_idx)   = A * xp + B * u;
+    dx(xp_idx)   = Ap * xp + Bp * u;
     dx(xm_idx)   = Am * xm + Bm * r(t);
     dx(theta_hat_idx) = - gamma * Bm' * P * et * xp';
     

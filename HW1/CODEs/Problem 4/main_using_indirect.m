@@ -3,6 +3,20 @@ clear
 close all
 set(0, 'defaultTextInterpreter', 'latex');
 
+%% Problem Definition
+
+% The plant state-space as follows :
+%   xp' = ap * xp + kp * u
+% The reference model state-space as follows :
+%   xm' = am * xm + km * r
+
+problem.plant.ap = 2; % plant feedback gain
+problem.plant.kp = 2; % plant feedforward gain
+
+problem.refModel.am    =  -3; % ref model feedback gain
+problem.refModel.km    =   3; % ref model feedforward gain
+problem.refModel.gamma = 100; % adaptation rate
+
 %% Simulate System
 
 dt = 0.1;                % time step [seconds]

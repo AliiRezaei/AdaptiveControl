@@ -57,7 +57,7 @@ figure
 subplot(2, 1, 1)
 plot(tSpan, ap_hat, 'LineWidth', 2)
 ylabel('$\hat{a}_p(t)$', 'FontSize', 15)
-title('Estimated Controller Parameters', 'FontSize', 15)
+title('Estimated Plant Parameters', 'FontSize', 15)
 subplot(2, 1, 2)
 plot(tSpan, kp_hat, 'LineWidth', 2)
 xlabel('t [sec]', 'FontSize', 15)
@@ -69,3 +69,12 @@ plot(tSpan, xp_hat - xp, 'LineWidth', 2)
 xlabel('t [sec]', 'FontSize', 15)
 ylabel('e(t)', 'FontSize', 15)
 title('Identification Error', 'FontSize', 15)
+
+% Plot control signal :
+figure
+u = (problem.refModel.am - ap_hat) ./ (kp_hat) .* xp + ...
+    (problem.refModel.km) ./ (kp_hat) .* r(tSpan);
+plot(tSpan, u, 'LineWidth', 2)
+xlabel('t [sec]', 'FontSize', 15)
+ylabel('u(t)', 'FontSize', 15)
+title('Control Signal', 'FontSize', 15)

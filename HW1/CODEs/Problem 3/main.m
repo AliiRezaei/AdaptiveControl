@@ -89,6 +89,13 @@ title('$\hat{B}(t)$', 'FontSize', 15)
 legend('$\hat{B}_{11}$', '$\hat{B}_{21}$', ...
         'interpreter', 'latex')
 
+% Plot identification error :
+figure
+plot(tSpan, x_hat - x, 'LineWidth', 2)
+xlabel('t [sec]', 'FontSize', 15)
+ylabel('e(t)', 'FontSize', 15)
+title('Identification Error', 'FontSize', 15)
+
 % Display final estimation :
 disp('Estimated A Matrix is :')
 disp(A_hat(:, : , end))

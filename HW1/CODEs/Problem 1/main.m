@@ -57,3 +57,10 @@ subplot(2, 1, 2)
 plot(tSpan, kp_hat, 'LineWidth', 2)
 xlabel('t [sec]', 'FontSize', 15)
 ylabel('$\hat{k}_p(t)$', 'FontSize', 15)
+
+% Plot identification error :
+figure
+plot(tSpan, xp_hat - xp, 'LineWidth', 2)
+xlabel('t [sec]', 'FontSize', 15)
+ylabel('e(t)', 'FontSize', 15)
+title('Identification Error', 'FontSize', 15)

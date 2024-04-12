@@ -14,14 +14,14 @@ problem.plant.kp = 3;           % actual feedforward gain
 problem.plant.f  = @(x) x^3;    % nonlinear function of xp [f(xp)]
 problem.plant.g  = @(u) sin(u); % nonlinear function of  u [g(u)]
 
-problem.adapt.am      = -2; % adaptive sys hurwitz param
-problem.adapt.gamma   = 50; % adaptation rate
-problem.adapt.modelID =  2; % set model ID for parametrization
+problem.adapt.am      = -5;   % adaptive sys hurwitz param
+problem.adapt.gamma   =  100; % adaptation rate
+problem.adapt.modelID =  2;   % set model ID for parametrization
 
 %% Simulate System
 
 dt = 0.1;                % time step [seconds]
-SimTime = 30;            % maximum simulation time [seconds]
+SimTime = 50;            % maximum simulation time [seconds]
 tSpan = (0:dt:SimTime)'; % time span
 xp_0  = rand;            % actual sys init cond
 xp_hat_0 = rand;         % estimated sys init cond
@@ -29,7 +29,7 @@ ap_hat_0 = rand;         % estimated linear term gain init cond
 alpha_hat_0 = rand;      % estimated nonlinear term gain init cond
 kp_hat_0 = rand;         % estimated feedforward gain init cond
 InitCond = [xp_0, xp_hat_0, ap_hat_0, alpha_hat_0, kp_hat_0]'; % initial conditions
-u = @(t) sin(t) + 0.2 * sin(2 * t);                   % system input
+u = @(t) sin(t) + sin(2 * t);                         % system input
 odeFunc = @(t, x) AdaptIdentNonLin(t, x, u, problem); % ode function
 [~, x] = ode45(odeFunc, tSpan, InitCond);             % solve ode
 
@@ -67,3 +67,10 @@ subplot(3, 1, 3)
 plot(tSpan, kp_hat, 'LineWidth', 2)
 xlabel('t [sec]', 'FontSize', 15)
 ylabel('$\hat{k}_p(t)$', 'FontSize', 15)
+
+% Plot identification error :
+figure
+plot(tSpan, xp_hat - xp, 'LineWidth', 2)
+xlabel('t [sec]', 'FontSize', 15)
+ylabel('e(t)', 'FontSize', 15)
+title('Identification Error', 'FontSize', 15)

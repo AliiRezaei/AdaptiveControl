@@ -43,16 +43,14 @@ theta_hat = X(:, 2*n+1:3*n);
 
 % plot x and x_hat :
 figure
-for i = 1:n
-    plot(tSpan, x_p(:, i), 'LineWidth', 2)
-    hold on
-    plot(tSpan, x_m(:, i), 'LineWidth', 2)
-end
+plot(tSpan, x_p, 'LineWidth', 2)
+hold on
+plot(tSpan, x_m, 'LineWidth', 2)
 xlabel('$t$ $[sec]$', 'FontSize', 15)
 ylabel('$x(t)$', 'FontSize', 15)
 title('Reference Model and Plant States', 'FontSize', 15)
-legend('$x_1(t)$','$\hat{x}_1(t)$', ...
-    '$x_2(t)$','$\hat{x}_2(t)$', ...
+legend('$x_{p1}(t)$','$x_{p2}(t)$', ...
+    '$x_{m1}(t)$','$x_{m1}(t)$', ...
     'interpreter', 'latex')
 
 % plot estimated parametes :

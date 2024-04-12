@@ -59,3 +59,10 @@ subplot(2, 1, 2)
 plot(tSpan, k_hat, 'LineWidth', 2)
 xlabel('t [sec]', 'FontSize', 15)
 ylabel('$\hat{k}(t)$', 'FontSize', 15)
+
+% Plot tracking error :
+figure
+plot(tSpan, xp - xm, 'LineWidth', 2)
+xlabel('t [sec]', 'FontSize', 15)
+ylabel('e(t)', 'FontSize', 15)
+title('Tracking Error', 'FontSize', 15)

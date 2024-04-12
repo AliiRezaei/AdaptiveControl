@@ -66,3 +66,11 @@ plot(tSpan, xp - xm, 'LineWidth', 2)
 xlabel('t [sec]', 'FontSize', 15)
 ylabel('e(t)', 'FontSize', 15)
 title('Tracking Error', 'FontSize', 15)
+
+% Plot control signal :
+figure
+u = theta_hat .* xp + k_hat .* r(tSpan);
+plot(tSpan, u, 'LineWidth', 2)
+xlabel('t [sec]', 'FontSize', 15)
+ylabel('u(t)', 'FontSize', 15)
+title('Control Signal', 'FontSize', 15)

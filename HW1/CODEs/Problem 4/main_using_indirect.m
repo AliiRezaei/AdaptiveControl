@@ -15,7 +15,7 @@ problem.plant.kp = 2; % plant feedforward gain
 
 problem.refModel.am    =  -3; % ref model feedback gain
 problem.refModel.km    =   3; % ref model feedforward gain
-problem.refModel.gamma = 100; % adaptation rate
+problem.refModel.gamma =  50; % adaptation rate
 
 %% Simulate System
 
@@ -67,8 +67,15 @@ ylabel('$\hat{k}_p(t)$', 'FontSize', 15)
 figure
 plot(tSpan, xp_hat - xp, 'LineWidth', 2)
 xlabel('t [sec]', 'FontSize', 15)
-ylabel('e(t)', 'FontSize', 15)
+ylabel('$e_i(t)$', 'FontSize', 15)
 title('Identification Error', 'FontSize', 15)
+
+% Plot tracking error :
+figure
+plot(tSpan, xp - xm, 'LineWidth', 2)
+xlabel('t [sec]', 'FontSize', 15)
+ylabel('$e_t(t)$', 'FontSize', 15)
+title('Tracking Error', 'FontSize', 15)
 
 % Plot control signal :
 figure

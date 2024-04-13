@@ -62,7 +62,18 @@ legend('$\hat{\theta}_{1}$', '$\hat{\theta}_{2}$', 'interpreter', 'latex')
 
 % Plot tracking error :
 figure
-plot(tSpan, xp - xm, 'LineWidth', 2)
+plot(tSpan, x_p - x_m, 'LineWidth', 2)
 xlabel('t [sec]', 'FontSize', 15)
 ylabel('$e_t(t)$', 'FontSize', 15)
 title('Tracking Error', 'FontSize', 15)
+
+% Plot control signal :
+figure
+u = zeros(nStates, n);
+for k = 1:nStates
+    u(k, :) = theta_hat(k, :) * x_p(k, :)' + r(tSpan(k));
+end
+plot(tSpan, u, 'LineWidth', 2)
+xlabel('t [sec]', 'FontSize', 15)
+ylabel('u(t)', 'FontSize', 15)
+title('Control Signal', 'FontSize', 15)

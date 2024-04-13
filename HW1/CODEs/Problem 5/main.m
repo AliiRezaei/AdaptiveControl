@@ -56,5 +56,13 @@ legend('$x_{p1}(t)$','$x_{p2}(t)$', ...
 % plot estimated parametes :
 figure
 plot(tSpan, theta_hat, 'LineWidth', 2)
-title('$\hat{\theta}(t)$', 'FontSize', 15)
+ylabel('$\hat{\theta}(t)$', 'FontSize', 15)
+title('Estimated Controller Parameters', 'FontSize', 15)
 legend('$\hat{\theta}_{1}$', '$\hat{\theta}_{2}$', 'interpreter', 'latex')
+
+% Plot tracking error :
+figure
+plot(tSpan, xp - xm, 'LineWidth', 2)
+xlabel('t [sec]', 'FontSize', 15)
+ylabel('$e_t(t)$', 'FontSize', 15)
+title('Tracking Error', 'FontSize', 15)

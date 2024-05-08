@@ -12,7 +12,7 @@ problem.plant.ap = -1;      % plant feedback gain
 problem.plant.kp =  1;      % plant feedforward gain
 
 problem.adapt.am      = -1; % adaptive sys hurwitz param
-problem.adapt.gamma   = 10; % adaptation rate
+problem.adapt.gamma   = 1; % adaptation rate
 problem.adapt.modelID =  1; % set model ID for parametrization
 
 %% Simulate System
@@ -25,7 +25,7 @@ xp_hat_0 = rand;         % estimated sys init cond
 ap_hat_0 = rand;         % estimated feedback gain init cond
 kp_hat_0 = rand;         % estimated feedforward gain init cond
 InitCond = [xp_0, xp_hat_0, ap_hat_0, kp_hat_0]'; % initial conditions
-u = @(t) sin(t); % system input
+u = @(t) (1); % system input
 odeFunc = @(t, x) AdaptIdent(t, x, u, problem); % ode function
 [~, x] = ode45(odeFunc, tSpan, InitCond);       % solve ode
 

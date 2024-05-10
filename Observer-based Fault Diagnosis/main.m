@@ -11,24 +11,46 @@ nt = numel(t);
 
 %% Single-Link Flexible Joint Robot System Params
 
-A = [1, 1e-3, 0, 0; -0.05, 1, 0.05, 0; 0, 0, 1, 1e-3; 0.02, 0, -0.02, 1];
-B = [0, 0.0216, 0, 0]';
-f = @(x) [0, 0, 0, -0.0333 * sin(x)]';
+Jm = 3.7e-3;
+Jl = 9.3e-3;
+m = 2.1e-1;
+b = 3.1e-1 / 2;
+k = 1.8e-1;
+B = 4.6e-2;
+k_tau = 8e-2;
+g = 9.81;
 
-% A_tilde = diag(linspace(-0.8, 0.8, 4));
-% A_tilde = 0.1 * eye(4);
-A_tilde = [-0.5, 0.5, 0, 0; -0.5, -0.5, 0, 0; 0, 0, -0.2, 0.3; 0, 0, -0.3, -0.2];
+%% Continuous Time Model
+
+Ac = [   0,     1,     0,   0;
+     -k/Jm, -B/Jm,  k/Jm,   0;
+         0,     0,     0,   1;
+      k/Jl,     0, -k/Jl,   0];
+
+Bc = [0, k_tau/Jm, 0, 0]';
+
+fc = @(x) [0, 0, 0, -m*g*b/Jl*sin(x)]';
+
+% A_tilde = [-0.5, 0.5, 0, 0; -0.5, -0.5, 0, 0; 0, 0, -0.2, 0.3; 0, 0, -0.3, -0.2];
+
+%% Discrete Time Model
+
+A = eye(size(Ac)) + dt * Ac;
+B = dt * Bc;
+f = @(x) [0, 0, 0, -dt*m*g*b/Jl*sin(x)]';
 
 %% Designing Params
 
-M = zeros(4); M(4, 3) = 0.06;
-N = zeros(4); N(3, 3) = 0.06;
+M = zeros(4); M(4, 3) = sqrt(m*g*b/Jl);
+N = zeros(4); N(3, 3) = sqrt(m*g*b/Jl) * dt;
 
 H = [16.956, 0, 0, 0; 0, 17.82, -9.07, 0.138; 0, -9.07, 21.824, -1.526; 0, 0.138, -1.526, 0.4060];
 Y = [0.8478, 0.0085, 0, 0; -0.4317, 0.8473, 0, 0; 0.2055, -0.0798, 0, 0; 0.0006, -0.0025, 0, 0];
 
-Q = 0.5 * eye(4);
+Q = 0.05 * eye(4);
 L = A - H \ Y;
+
+A_tilde = [-0.5, 0.5, 0, 0; -0.5, -0.5, 0, 0; 0, 0, -0.2, 0.3; 0, 0, -0.3, -0.2];
 
 %% Simulation
 
@@ -47,26 +69,26 @@ theta_tilde = zeros(nt, 1);
 
 u = ones(nt, 1);
 
-for k = 1:nt - 1
+for kk = 1:nt - 1
 
-    % u(k) = 1;
-    % u(k) = B \ ((A_tilde - A) * x(:, k) - f(x(3, k))) / (1 - theta(k));
-    PI = - B * u(k);
+    % u(kk) = 1;
+    % u(kk) = B \ ((A_tilde - A) * x(:, kk) - f(x(3, kk))) / (1 - theta(kk));
+    PI = - B * u(kk);
 
-    if k*dt > 2
-        theta(k+1) = 1.5;
+    if kk*dt > 2
+        theta(kk+1) = 1.5;
     end
 
-    x(:, k+1) = A * x(:, k) + f(x(3, k)) + B * u(k) + PI * theta(k);
+    x(:, kk+1) = A * x(:, kk) + f(x(3, kk)) + B * u(kk) + PI * theta(kk);
     
     XI = 2 * (PI * PI' + Q)^(-1);
     
-    x_tilde(:, k+1) = L * x_tilde(:, k) + PI * theta_tilde(k) + (f(x(3, k)) - f(x_bar(3, k)));
+    x_tilde(:, kk+1) = L * x_tilde(:, kk) + PI * theta_tilde(kk) + (f(x(3, kk)) - f(x_bar(3, kk)));
+    % x_tilde(:, kk+1) = x(:, kk) - x_bar(:, kk);
+    x_bar(:, kk+1) = A * x_bar(:, kk) + f(x_bar(3, kk)) + B * u(kk) + PI * theta_bar(kk) + H \ Y * x_tilde(:, kk);
     
-    x_bar(:, k+1) = A * x_bar(:, k) + f(x_bar(3, k)) + B * u(k) + PI * theta_bar(k) + H \ Y * x_tilde(:, k);
-    
-    theta_bar(k+1) = theta_bar(k) + PI' * XI * (x_tilde(:, k+1) - L * x_tilde(:, k) - (f(x(3, k)) - f(x_bar(3, k))));
-    theta_tilde(k+1) = theta(k) - theta_bar(k);
+    theta_bar(kk+1) = theta_bar(kk) + PI' * XI * (x_tilde(:, kk+1) - L * x_tilde(:, kk) - (f(x(3, kk)) - f(x_bar(3, kk))));
+    theta_tilde(kk+1) = theta(kk) - theta_bar(kk);
 
 end
 
@@ -99,8 +121,8 @@ figure
 plot(t, theta, 'LineWidth', 2)
 hold on
 plot(t, theta_bar, '--', 'LineWidth', 2)
-% figure
-% plot(t, x_tilde)
+figure
+plot(t, x_tilde)
 
 
 

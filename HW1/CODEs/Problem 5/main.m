@@ -23,7 +23,7 @@ problem.refModel.gamma = 1;
 %% Simulate System
 
 dt = 0.1;                        % time step [seconds]
-SimTime = 60;                    % maximum simulation time [seconds]
+SimTime = 30;                    % maximum simulation time [seconds]
 tSpan = (0:dt:SimTime)';         % time span
 xp_0  = rand(n, 1);              % plant init cond
 xm_0  = xp_0 + 0.1 * rand(n, 1); % ref model init cond

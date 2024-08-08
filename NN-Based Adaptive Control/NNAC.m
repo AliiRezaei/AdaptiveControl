@@ -1,31 +1,52 @@
 function dx = NNAC(t, states, problem)
-    % Adaptive Identification of linear High Order SISO systems.
-    % In this case we have a linear sys as follows :
-    %   xp' = Ap * xp + Bp * u
-    % Where : 
-    %   xp --> plant states        (n by 1)
-    %   Ap --> plant system matrix (n by n)
-    %   Bp --> plant input matrix  (n by 1)
-    %   u  --> sys input           (1 by 1)
-    % We want to estimate the system matrices (Ap and Bp), also system states.
-    % This code use the Model (II) for parameterization.
-    % Inputs :
-    %   t --> time
-    %   states --> agumented states
-    %   u --> sys input
-    %   problem --> contains plant and adaptive sys params (problem formulation)
-    %       problem.plant.Ap ~ Ap
-    %       problem.plant.Bp ~ Bp
-    %       problem.adapt.Am ~ Am
-    %       problem.adapt.P  ~ P  (lyapunov P matrix)
-    %       problem.adapt.gamma ~ gamma
-    %   Note : Am, P, Q satisfy following lyapunov equation :
-    %       << Am^T * P + P * Am = - Q >> (Q declared in main program)
-    % Outputs :
-    %   dx --> derivative of agumented states
+    % Neural Network-Based Adaptive Control for dynamical systems.
+    % This function implements a controller for a geometric nonlinear system defined as:
+    %   x' = f(x) + g(x) * u + d(t)
+    % Where: 
+    %   x    --> Plant states                        (n by 1)
+    %   f(x) --> Nonlinear smooth function of states (n by 1)
+    %   g(x) --> Nonlinear smooth function of states (n by m)
+    %   u    --> System input                        (m by 1)
+    %   d    --> Disturbance                         (1 by 1)
+    % "n" is the system order, and "m" is the number of system inputs.
+    %
+    % The goal is to design a Neural Network-Based Adaptive Controller
+    % that drives the system states to the desired states without prior
+    % knowledge of the system dynamics.
+    %
+    % This is achieved using a two-layer feedforward Neural Network
+    % with "n" neurons in the input layer, "2n+1" neurons in the hidden layer,
+    % and "m" neurons in the output layer.
+    %
+    % The controller is expressed as:
+    %   u = -W * PHI(V * x_NN)
+    % Where: 
+    %   V    --> Input layer weights 
+    %   W    --> Output layer weights 
+    %   PHI  --> Network kernel function 
+    %   x_NN --> NN inputs 
+    %
+    % The adaptation laws for V and W are derived accordingly.
+    %
+    % Inputs:
+    %   t       --> Time
+    %   states  --> Augmented states vector
+    %   problem --> Structure containing plant, NN, and design parameters
+    %       problem.plant.fx           --> Function handle for f(x)
+    %       problem.plant.gx           --> Function handle for g(x)
+    %       problem.plant.d            --> Function handle for disturbance d(t)
+    %       problem.NN.inputLayerSize  --> Input layer size
+    %       problem.NN.hiddenLayerSize --> Hidden layer size
+    %       problem.NN.outputLayerSize --> Output layer size
+    %       problem.desParam.Ac        --> Hurwitz matrix (n by n)
+    %       problem.desParam.eta       --> Learning rate vector (2 by 1)
+    %       problem.desParam.gamma     --> E-modification constants (2 by 1)
+    %
+    % Outputs:
+    %   dx --> Derivative of augmented states
     
     % plant :
-    f0 = problem.plant.fx; % f(x)
+    f = problem.plant.fx;  % f(x)
     g  = problem.plant.gx; % g(x)
     d  = problem.plant.d;  % d(t) disturbance
     
@@ -68,7 +89,7 @@ function dx = NNAC(t, states, problem)
     u = - W_hat * kernel(V_hat * x_NN); % control signal
 
     % plant derivative :
-    dx(x_idx)     = f0(x) + g(x) * u + d(t);
+    dx(x_idx)     = f(x) + g(x) * u + d(t);
 
     % input layer weights adaption law :
     dV_hat = - eta(1) * (e' * inv(Ac) * ones(n, 1) * W_hat * (eye(nOutput) - diag((kernel(V_hat * x_NN)).^2)))' * x_NN' - ...

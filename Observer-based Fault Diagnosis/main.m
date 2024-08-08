@@ -68,15 +68,16 @@ theta_bar = zeros(nt, 1);
 theta_tilde = zeros(nt, 1);
 
 u = ones(nt, 1);
-
+fault_time_min = 1;
+fault_time_max = 3;
 for kk = 1:nt - 1
 
     % u(kk) = 1;
     % u(kk) = B \ ((A_tilde - A) * x(:, kk) - f(x(3, kk))) / (1 - theta(kk));
     PI = - B * u(kk);
 
-    if kk*dt > 2
-        theta(kk+1) = 1.5;
+    if kk*dt > fault_time_min && kk*dt < fault_time_max
+        theta(kk+1) = 2.5;
     end
 
     x(:, kk+1) = A * x(:, kk) + f(x(3, kk)) + B * u(kk) + PI * theta(kk);
@@ -101,28 +102,52 @@ subplot(4, 1, 1)
 plot(t, x(:, 1), 'LineWidth', 2)
 hold on
 plot(t, x_bar(:, 1), '--', 'LineWidth', 2)
+x_shade = [fault_time_min, fault_time_max, fault_time_max, fault_time_min];
+y_shade = [min(x_bar(:, 1)), min(x_bar(:, 1)), max(x_bar(:, 1)), max(x_bar(:, 1))];
+fill(x_shade, y_shade, 'r', 'FaceAlpha', 0.3, 'EdgeColor', 'none')
+legend('$True$ $State$', 'NLAO', 'Interpreter', 'latex')
+ylabel('$x_{1k}$', 'Interpreter', 'latex')
+title('$True$ $States$ $and$ $Observation$', 'Interpreter', 'latex')
 
 subplot(4, 1, 2)
 plot(t, x(:, 2), 'LineWidth', 2)
 hold on
 plot(t, x_bar(:, 2), '--', 'LineWidth', 2)
+y_shade = [min(x_bar(:, 2)), min(x_bar(:, 2)), max(x_bar(:, 2)), max(x_bar(:, 2))];
+fill(x_shade, y_shade, 'r', 'FaceAlpha', 0.3, 'EdgeColor', 'none')
+ylabel('$x_{2k}$', 'Interpreter', 'latex')
 
 subplot(4, 1, 3)
 plot(t, x(:, 3), 'LineWidth', 2)
 hold on
 plot(t, x_bar(:, 3), '--', 'LineWidth', 2)
+y_shade = [min(x_bar(:, 3)), min(x_bar(:, 3)), max(x_bar(:, 3)), max(x_bar(:, 3))];
+fill(x_shade, y_shade, 'r', 'FaceAlpha', 0.3, 'EdgeColor', 'none')
+ylabel('$x_{3k}$', 'Interpreter', 'latex')
 
 subplot(4, 1, 4)
 plot(t, x(:, 4), 'LineWidth', 2)
 hold on
 plot(t, x_bar(:, 4), '--', 'LineWidth', 2)
+y_shade = [min(x_bar(:, 4)), min(x_bar(:, 4)), max(x_bar(:, 4)), max(x_bar(:, 4))];
+fill(x_shade, y_shade, 'r', 'FaceAlpha', 0.3, 'EdgeColor', 'none')
+xlabel('$k/\delta$ $(s)$', 'Interpreter', 'latex')
+ylabel('$x_{4k}$', 'Interpreter', 'latex')
 
 figure
 plot(t, theta, 'LineWidth', 2)
 hold on
 plot(t, theta_bar, '--', 'LineWidth', 2)
-figure
-plot(t, x_tilde)
+xlabel('$k/\delta$ $(s)$', 'Interpreter', 'latex')
+ylabel('$\theta$', 'Interpreter', 'latex')
+title('$True$ $Fault$ $and$ $Estimation$', 'Interpreter', 'latex')
+legend('$\theta$', '$\hat{\theta}$', 'Interpreter', 'latex')
 
+figure
+plot(t, x_tilde, 'LineWidth', 2)
+xlabel('$k/\delta$ $(s)$', 'Interpreter', 'latex')
+ylabel('$\tilde{x}_k$', 'Interpreter', 'latex')
+title('$State$ $Estimation$ $Error$', 'Interpreter', 'latex')
+legend('$\tilde{x}_1k$', '$\tilde{x}_2k$', '$\tilde{x}_3k$', '$\tilde{x}_4k$', 'Interpreter', 'latex')
 
 

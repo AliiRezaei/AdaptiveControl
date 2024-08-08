@@ -17,7 +17,7 @@ problem.desParam.x_d = @(t) [sin(0.5*t) + cos(0.25*t), -0.25*sin(0.25*t) + 0.5*c
 % constants (for controller designing) :
 problem.desParam.Ac    = diag([-1, -1]);
 problem.desParam.eta   = [0.7; 0.7];
-problem.desParam.gamma = [0.01; 0.01];
+problem.desParam.gamma = [0.001; 0.001];
 
 %% Neural Network Params
 
@@ -85,12 +85,12 @@ end
 % control signal :
 u = zeros(nStates, 1);
 for k = 1:nStates
-    u(k, 1) = - W_hat(:, :, k) * problem.NN.kernel(V_hat(:, :, k) * [(x(k, :) - x_d(k, :))'; x_d(k, :)']); % control signal
+    u(k, 1) = - W_hat(:, :, k) * problem.NN.kernel(V_hat(:, :, k) * [(x(k, :) - x_d(k, :))'; x_d(k, :)']);
 end
 
 %% Trained Network
 
-net = @(x) W_hat(:, :, end) * problem.NN.kernel(V_hat(:, :, end) * x);
+net = @(x) - W_hat(:, :, end) * problem.NN.kernel(V_hat(:, :, end) * x);
 
 %% Plots and Results
 

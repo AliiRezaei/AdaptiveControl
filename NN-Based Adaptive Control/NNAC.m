@@ -78,6 +78,6 @@ function dx = NNAC(t, states, problem)
     % output layer weights adaption law :
     dW_hat = - eta(2) * e' * inv(Ac) * ones(n, 1) * (kernel(V_hat * x_NN))' - ...
         gamma(2) * sqrt(e' * e) * W_hat; %#ok
-    dx(W_hat_idx) = dW_hat;
+    dx(W_hat_idx) = dW_hat(:);
 
 end

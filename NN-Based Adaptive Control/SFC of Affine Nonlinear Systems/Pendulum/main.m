@@ -96,17 +96,21 @@ net = @(x) - W_hat(:, :, end) * problem.NN.kernel(V_hat(:, :, end) * x);
 
 % plot x and x_d :
 figure
-for i = 1:n
-    plot(t, x(:, i), 'LineWidth', 2)
-    hold on
-    plot(t, x_d(:, i), 'LineWidth', 2)
-end
-xlabel('$t$ $[sec]$', 'FontSize', 15)
-ylabel('$x(t)$', 'FontSize', 15)
+subplot(2,1,1)
+plot(t, x(:, 1), 'LineWidth', 2)
+hold on
+plot(t, x_d(:, 1), '--', 'LineWidth', 2)
+ylabel('$x_1(t)$', 'FontSize', 15)
 title('Plant Actual and Desired States', 'FontSize', 15)
-legend('$x_1(t)$','$x_{1d}(t)$', ...
-    '$x_2(t)$','$x_{2d}(t)$', ...
-    'interpreter', 'latex')
+legend('$x_1(t)$','$x_{1d}(t)$', 'interpreter', 'latex')
+
+subplot(2, 1, 2)
+plot(t, x(:, 2), 'LineWidth', 2)
+hold on
+plot(t, x_d(:, 2), '--', 'LineWidth', 2)
+ylabel('$x_2(t)$', 'FontSize', 15)
+legend('$x_2(t)$','$x_{2d}(t)$', 'interpreter', 'latex')
+xlabel('$t$ $[sec]$', 'FontSize', 15)
 
 % plot estimated NN weights :
 figure

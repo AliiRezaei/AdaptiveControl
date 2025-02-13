@@ -86,6 +86,7 @@ function dx = NNAC(t, states, problem)
     % designing controller :
     e    = x - x_d(t)';                 % tracking error
     x_NN = [e; x_d(t)'];                % NN inputs
+    % x_NN = e;                % NN inputs
     u = - W_hat * kernel(V_hat * x_NN); % control signal
 
     % plant derivative :

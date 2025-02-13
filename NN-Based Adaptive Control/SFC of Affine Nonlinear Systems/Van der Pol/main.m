@@ -37,6 +37,9 @@ problem.NN.outputLayerSize = outputLayerSize;
 % tanh kernel function :
 problem.NN.kernel = @(phi) tanh(phi);
 
+% % polynomial kernel function :
+% problem.NN.kernel = @(phi) phi .^3 + phi .^2 + phi + 1;
+
 % weights (initialization):
 V = 0.1 * randn(hiddenLayerSize, inputLayerSize);  % hidden layer weights
 W = 0.1 * randn(outputLayerSize, hiddenLayerSize); % output weights

@@ -1,6 +1,6 @@
 clc
 clear
-close all
+% close all
 set(0, 'defaultTextInterpreter', 'latex');
 
 %% Problem Definition
@@ -23,7 +23,7 @@ problem.desParam.gamma = [0.001; 0.001];
 
 % layers :
 inputLayerSize  = 2 * n;                  % number of neurons in input  layer
-hiddenLayerSize = 40; % number of neurons in hidden layer
+hiddenLayerSize = 2 * inputLayerSize + 1; % number of neurons in hidden layer
 outputLayerSize = 1;                      % number of neurons in output layer
 problem.NN.inputLayerSize  = inputLayerSize;
 problem.NN.hiddenLayerSize = hiddenLayerSize;

@@ -104,10 +104,13 @@ function dx = NNACIS(t, states, problem)
     % saturated control signal :
     if u > u_max
         sat_u = u_max;
+        Delta_u = 1;
     elseif u < u_min
         sat_u = u_min;
+        Delta_u = 1;
     else
         sat_u = u;
+        Delta_u = 0;
     end
 
     % ctrl signal part that is not applied to the system due to actuator saturation :
@@ -120,13 +123,13 @@ function dx = NNACIS(t, states, problem)
     dx(zeta_idx)  = K * zeta + h * delta_u;
 
     % input layer weights adaption law :
-    dV_hat = - eta(1) * (e_tilde' * (-inv(Ac) * ones(n, 1) + inv(K) * h * delta_u) * (-W_hat * (eye(nHidden ...
+    dV_hat = - eta(1) * (e_tilde' * (-inv(Ac) * ones(n, 1) + inv(K) * h * Delta_u) * (-W_hat * (eye(nHidden ...
         ) - diag((kernel(V_hat * x_NN)).^2))))' * x_NN' - ...
         gamma(1) * sqrt(e' * e) * V_hat - gamma(1) * sqrt(zeta' * zeta) * V_hat; %#ok
     dx(V_hat_idx) = dV_hat(:);
 
     % output layer weights adaption law :
-    dW_hat = - eta(2) * e_tilde' * (-inv(Ac) * ones(n, 1) + inv(K) * h * delta_u) * (-kernel(V_hat * x_NN))' - ...
+    dW_hat = - eta(2) * e_tilde' * (-inv(Ac) * ones(n, 1) + inv(K) * h * Delta_u) * (-kernel(V_hat * x_NN))' - ...
         gamma(2) * sqrt(e' * e) * W_hat - gamma(2) * sqrt(zeta' * zeta) * W_hat; %#ok
     dx(W_hat_idx) = dW_hat(:);
 

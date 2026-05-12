@@ -1,6 +1,6 @@
 clc
 clear
-close all
+% close all
 set(0, 'defaultTextInterpreter', 'latex');
 
 %% Problem Definition
@@ -15,9 +15,12 @@ n = 2;
 problem.desParam.x_d = @(t) [sin(0.5*t) + cos(0.25*t), -0.25*sin(0.25*t) + 0.5*cos(0.5*t)];
 
 % constants (for controller designing) :
+% problem.desParam.Ac    = diag([-1, -1]);
+% problem.desParam.eta   = [0.7; 0.7];
+% problem.desParam.gamma = [0.001; 0.001];
 problem.desParam.Ac    = diag([-1, -1]);
-problem.desParam.eta   = [0.7; 0.7];
-problem.desParam.gamma = [0.001; 0.001];
+problem.desParam.eta   = 10 * [70; 70];
+problem.desParam.gamma = 10 * [0.1; 0.1];
 
 %% Neural Network Params
 
@@ -33,9 +36,12 @@ problem.NN.outputLayerSize = outputLayerSize;
 % mu    = zeros(hiddenLayerSize, outputLayerSize); % mean
 % sigma = ones(hiddenLayerSize,  outputLayerSize); % var
 % problem.NN.kernel = @(phi) exp((phi - mu) ./ sigma.^2);
+% 
+% % tanh kernel function :
+% problem.NN.kernel = @(phi) tanh(phi);
 
-% tanh kernel function :
-problem.NN.kernel = @(phi) tanh(phi);
+% ReLU kernel function :
+problem.NN.kernel = @(phi) (-1 + 2 ./ (1 + exp(-2 * phi)));
 
 % % polynomial kernel function :
 % problem.NN.kernel = @(phi) phi .^3 + phi .^2 + phi + 1;

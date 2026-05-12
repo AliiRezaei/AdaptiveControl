@@ -37,13 +37,16 @@ problem.NN.inputLayerSize  = inputLayerSize;
 problem.NN.hiddenLayerSize = hiddenLayerSize;
 problem.NN.outputLayerSize = outputLayerSize;
 
-% RBF kernel function :
-mu    = zeros(hiddenLayerSize, outputLayerSize); % mean
-sigma = ones(hiddenLayerSize,  outputLayerSize); % var
-problem.NN.kernel = @(phi) exp((phi - mu) ./ sigma.^2);
+% % RBF kernel function :
+% mu    = zeros(hiddenLayerSize, outputLayerSize); % mean
+% sigma = ones(hiddenLayerSize,  outputLayerSize); % var
+% problem.NN.kernel = @(phi) exp((phi - mu) ./ sigma.^2);
 
 % % tanh kernel function :
 % problem.NN.kernel = @(phi) tanh(phi);
+
+% sigmoid kernel function :
+problem.NN.kernel = @(phi) (-1 + 2 ./ (1 + exp(-2 * phi)));
 
 % weights (initialization):
 V = 0.1 * randn(hiddenLayerSize, inputLayerSize);  % hidden layer weights

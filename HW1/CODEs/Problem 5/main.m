@@ -14,11 +14,11 @@ problem.plant.Ap = [0, 1; -4, 4];
 problem.plant.Bp = [0, 1]';
 n  = size(problem.plant.Ap ,1);
 
-problem.refModel.Am = [0, 1; -1, -1];
+problem.refModel.Am = [0, 1; -15, -15];
 problem.refModel.Bm = [0, 1]';
 Q  = eye(n);
 problem.refModel.P  = lyap(problem.refModel.Am, Q);
-problem.refModel.gamma = 1;
+problem.refModel.gamma = 100;
 
 %% Simulate System
 

@@ -8,6 +8,7 @@ slprj/
 # Last version and autosave files
 *.slx.autosave
 *.slx.r2024b
+*.slx.r2021b
 *.slx.original
 
 # Report directory
@@ -18,3 +19,9 @@ Report/
 
 # ROS com generated files
 +bus_conv_fcns/
+
+# Temp files
+Shits/
+
+# Ignore validation for this moment
+Validation/

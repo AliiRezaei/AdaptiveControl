@@ -4,3 +4,17 @@
 
 # Generated folders
 slprj/
+
+# Last version and autosave files
+*.slx.autosave
+*.slx.r2024b
+*.slx.original
+
+# Report directory
+Report/
+*.pdf
+*.docx
+*.rar
+
+# ROS com generated files
++bus_conv_fcns/

@@ -3,8 +3,9 @@ clear
 close all
 set(0, 'defaultlinelinewidth', 1.5)
 set(0, 'defaulttextinterpreter', 'latex')
-figFontSize = 16; % figures font size
-legFontSize = 13; % legends font size
+figFontSize = 28; % figures font size
+legFontSize = 16; % legends font size
+figTicksFontSize = 20;
 
 %% Independent Var x
 
@@ -43,12 +44,9 @@ end
 
 fig = figure;
 theme(fig, 'light');
-t = tiledlayout(3,1, 'TileSpacing','compact', 'Padding','compact');
-
-% Plot your data only in the first tile
+tLayout = tiledlayout(3,1, 'TileSpacing','compact', 'Padding','compact');
 nexttile(1);
-colors = hsv(nq+1);
-subplot(3, 1, 1)
+
 hold on; box on; grid on;
 plot(x, sat_q_val(:, 1));
 plot(x, sat_q_val(:, 2), '--');
@@ -58,13 +56,32 @@ xline(0, 'k');
 yline(0, 'k');
 xlim(xLimit)
 ylim([-5 5])
-ylabel('$\mathrm{sat}_q(x)$', 'Interpreter', 'latex', 'FontSize', figFontSize)
-title('Saturation Approximation', 'FontSize', figFontSize)
+xlabel('$x$', 'Interpreter', 'latex')
+ylabel('$\mathrm{sat}_q(x)$', 'Interpreter', 'latex')
+title('Saturation Approximation')
 legend(['$q=$', num2str(q(1))], ['$q=$', num2str(q(2))], ['$q=$', num2str(q(3))], '$q\to\infty$', 'interpreter', 'latex', 'Location', 'southeast')
 legend('NumColumns', 2, 'Orientation', 'horizontal', 'FontSize', legFontSize)
-set(gca, 'FontSize', figFontSize)
 
-subplot(3, 1, 2)
+gca_instance = gca; 
+set(gca_instance, 'FontSize', figFontSize); 
+gca_instance.XAxis.FontSize = figTicksFontSize; 
+gca_instance.XLabel.FontSize = figFontSize; 
+gca_instance.YAxis.FontSize = figTicksFontSize; 
+gca_instance.YLabel.FontSize = figFontSize;
+
+nexttile(2); axis off;
+nexttile(3); axis off;
+
+% export high-quality
+set(gcf, 'Position', [100 100 700 850])
+exportgraphics(fig, 'Figures/Fig_Sim_Sat_q.pdf', 'ContentType', 'vector');
+
+
+fig = figure;
+theme(fig, 'light');
+tLayout = tiledlayout(3,1, 'TileSpacing','compact', 'Padding','compact');
+nexttile(1);
+
 hold on; box on; grid on;
 plot(x, dsat_q_val(:, 1));
 plot(x, dsat_q_val(:, 2), '--');
@@ -74,12 +91,30 @@ xline(0, 'k');
 yline(0, 'k');
 xlim(xLimit)
 ylim(1.3*[-1/1.3 1])
-% xlabel('$x$', 'Interpreter', 'latex', 'FontSize', figFontSize)
-ylabel('$\frac{d}{dx}\mathrm{sat}_q(x)$', 'Interpreter', 'latex', 'FontSize', figFontSize)
-title('Saturation Approximation Derivative', 'FontSize', figFontSize)
-set(gca, 'FontSize', figFontSize)
+xlabel('$x$', 'Interpreter', 'latex')
+ylabel('$\frac{d}{dx}\mathrm{sat}_q(x)$', 'Interpreter', 'latex')
+title('First Order Derivative')
 
-subplot(3, 1, 3)
+gca_instance = gca; 
+set(gca_instance, 'FontSize', figFontSize); 
+gca_instance.XAxis.FontSize = figTicksFontSize; 
+gca_instance.XLabel.FontSize = figFontSize; 
+gca_instance.YAxis.FontSize = figTicksFontSize; 
+gca_instance.YLabel.FontSize = figFontSize;
+
+nexttile(2); axis off;
+nexttile(3); axis off;
+
+% export high-quality
+set(gcf, 'Position', [100 100 700 850])
+exportgraphics(fig, 'Figures/Fig_Sim_dSat_q.pdf', 'ContentType', 'vector');
+
+
+fig = figure;
+theme(fig, 'light');
+tLayout = tiledlayout(3,1, 'TileSpacing','compact', 'Padding','compact');
+nexttile(1);
+
 hold on; box on; grid on;
 plot(x, ddsat_q_val(:, 1));
 plot(x, ddsat_q_val(:, 2), '--');
@@ -92,11 +127,20 @@ xline(0, 'k');
 yline(0, 'k');
 xlim(xLimit)
 ylim(1.3*[-1 1])
-xlabel('$x$', 'Interpreter', 'latex', 'FontSize', figFontSize)
-ylabel('$\frac{d^2}{dx^2}\mathrm{sat}_q(x)$', 'Interpreter', 'latex', 'FontSize', figFontSize)
-title('Saturation Approximation Second Derivative', 'FontSize', figFontSize)
-set(gca, 'FontSize', figFontSize)
+xlabel('$x$', 'Interpreter', 'latex')
+ylabel('$\frac{d^2}{dx^2}\mathrm{sat}_q(x)$', 'Interpreter', 'latex')
+title('Second Order Derivative')
+
+gca_instance = gca; 
+set(gca_instance, 'FontSize', figFontSize); 
+gca_instance.XAxis.FontSize = figTicksFontSize; 
+gca_instance.XLabel.FontSize = figFontSize; 
+gca_instance.YAxis.FontSize = figTicksFontSize; 
+gca_instance.YLabel.FontSize = figFontSize;
+
+nexttile(2); axis off;
+nexttile(3); axis off;
 
 % export high-quality
 set(gcf, 'Position', [100 100 700 850])
-% exportgraphics(fig, 'Figures/Sat_q.pdf', 'ContentType', 'vector');
+exportgraphics(fig, 'Figures/Fig_Sim_ddSat_q.pdf', 'ContentType', 'vector');

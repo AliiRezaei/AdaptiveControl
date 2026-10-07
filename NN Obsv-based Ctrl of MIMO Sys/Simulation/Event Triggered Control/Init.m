@@ -33,6 +33,6 @@ x_hat0 = [0.9; 0];
 
 %% Control Saturation
 
-u_max =   5;
-u_min = - 5;
+u_max =   1.5;
+u_min = - 1.5;
 Ts    = 1e-3;
